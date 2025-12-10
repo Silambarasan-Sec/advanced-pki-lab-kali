@@ -1,0 +1,67 @@
+[ ca ]
+default_ca = CA_default
+
+[ CA_default ]
+dir               = /home/kali/pki-lab/sub
+database          = $dir/index.txt
+serial            = $dir/serial
+new_certs_dir     = $dir/newcerts
+
+private_key       = $dir/private/sub.key
+certificate       = $dir/sub.crt
+
+crlnumber         = $dir/crlnumber
+crl               = $dir/crl.pem
+crl_extensions    = crl_ext
+default_crl_days  = 30
+
+default_md        = sha256
+default_days      = 825
+preserve          = no
+unique_subject    = no
+policy            = policy_loose
+
+[ policy_loose ]
+countryName             = optional
+stateOrProvinceName     = optional
+localityName            = optional
+organizationName        = optional
+organizationalUnitName  = optional
+commonName              = supplied
+emailAddress            = optional
+
+[ req ]
+default_bits        = 4096
+default_md          = sha256
+distinguished_name  = req_distinguished_name
+string_mask         = utf8only
+
+[ req_distinguished_name ]
+countryName_default             = FR
+stateOrProvinceName_default     = IDF
+localityName_default            = Paris
+organizationName_default        = PKI Sub CA
+commonName                      = Common Name
+commonName_max                  = 64
+
+[ usr_cert ]
+basicConstraints       = CA:false
+subjectKeyIdentifier   = hash
+authorityKeyIdentifier = keyid,issuer
+keyUsage               = critical, digitalSignature, keyEncipherment
+extendedKeyUsage       = clientAuth, emailProtection
+
+[ server_cert ]
+basicConstraints       = CA:false
+subjectKeyIdentifier   = hash
+authorityKeyIdentifier = keyid,issuer
+keyUsage               = critical, digitalSignature, keyEncipherment
+extendedKeyUsage       = serverAuth
+
+[ crl_ext ]
+authorityKeyIdentifier = keyid:always
+
+[ ocsp ]
+basicConstraints       = CA:false
+keyUsage               = critical, digitalSignature
+extendedKeyUsage       = critical, OCSPSigning
